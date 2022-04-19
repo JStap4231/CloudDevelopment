@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Josh\\Downloads\\workshop 2\\workshop 2\\SimulatedDevice\\SimulatedDevice.csproj": {}
+    "C:\\Users\\Josh\\Documents\\CloudDevelopment\\SimulatedDevice\\SimulatedDevice.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Josh\\Downloads\\workshop 2\\workshop 2\\SimulatedDevice\\SimulatedDevice.csproj": {
+    "C:\\Users\\Josh\\Documents\\CloudDevelopment\\SimulatedDevice\\SimulatedDevice.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Josh\\Downloads\\workshop 2\\workshop 2\\SimulatedDevice\\SimulatedDevice.csproj",
+        "projectUniqueName": "C:\\Users\\Josh\\Documents\\CloudDevelopment\\SimulatedDevice\\SimulatedDevice.csproj",
         "projectName": "SimulatedDevice",
-        "projectPath": "C:\\Users\\Josh\\Downloads\\workshop 2\\workshop 2\\SimulatedDevice\\SimulatedDevice.csproj",
+        "projectPath": "C:\\Users\\Josh\\Documents\\CloudDevelopment\\SimulatedDevice\\SimulatedDevice.csproj",
         "packagesPath": "C:\\Users\\Josh\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Josh\\Downloads\\workshop 2\\workshop 2\\SimulatedDevice\\obj\\",
+        "outputPath": "C:\\Users\\Josh\\Documents\\CloudDevelopment\\SimulatedDevice\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Josh\\AppData\\Roaming\\NuGet\\NuGet.Config"
