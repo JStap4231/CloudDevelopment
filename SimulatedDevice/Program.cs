@@ -26,7 +26,7 @@ namespace SimulatedDevice
         // The device connection string to authenticate the device with your IoT hub.
         // Using the Azure CLI:
         // az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyDotnetDevice --output table
-        private static string s_connectionString = "HostName=CloudDevelopmentWorkshopHub.azure-devices.net;DeviceId=Workshop_device;SharedAccessKey=gfWnOBLZ8RQ7awkBuwYzC8QXxJxD0EicDmewGob8s7w=";
+        private static string s_connectionString = "HostName=CloudDevIoTHub.azure-devices.net;DeviceId=JStap_SimDevice;SharedAccessKey=TKy8DAdR0vH16wvIw/lzKj1r0hlpVuTEFnQz0Fa68og=";
 		
 
         private static async Task Main(string[] args)
@@ -89,23 +89,33 @@ namespace SimulatedDevice
         private static async Task SendDeviceToCloudMessagesAsync(CancellationToken ct)
         {
             // Initial telemetry values
-            double livingroonTemp = 20;
-            double livingroomMoisture = 60;
-            bool frontDoor = true;
-            bool backDoor = true;
-            double electricityUsage = 2900;
-            double gasUsage = 12000;
+            double minTemp = 15;
+            bool doorLocked;
             bool isHeatingOn;
             var rand = new Random();
 
             while (!ct.IsCancellationRequested)
             {
-                double currentTemperature = livingroonTemp + rand.NextDouble() * 15;
-                double currentHumidity = livingroomMoisture + rand.NextDouble() * 20;
-                bool newFrontDoor = rand.Next(2) == 1;
+                //Calculate the new current temperature of the bedroom
+                double currentBedroomTemperature = minTemp + rand.NextDouble() * 10;
+
+                //Calculate the new current temperature of the livingroom
+                double currentLivingroomTemperature = minTemp + rand.NextDouble() * 10;
+                
+                //Create the value that will be used to asses whether the door is unlocked
+                double door = rand.NextDouble();
+                
+                //Decide if the door is unlocked. There is a 20% chance the door will be unlocked every
+                //time the simulated device send data.
+                if (door > 0.8){
+                    doorLocked = false;
+                }
+                else{
+                    doorLocked = true;
+                }
 
                 //Decide if the heating is on or not
-                if (livingroonTemp < 15){
+                if (currentBedroomTemperature < 20 | currentLivingroomTemperature < 20){
                     isHeatingOn = true;
                 }
                 else{
@@ -116,20 +126,16 @@ namespace SimulatedDevice
                 string messageBody = JsonSerializer.Serialize(
                     new
                     {
-                        livingroonTemp = currentTemperature,
-                        livingroomMoisture = currentHumidity,
-                        frontDoor = newFrontDoor,
+                        currentLivingroomTemperature,
+                        currentBedroomTemperature,
                         isHeatingOn,
+                        doorLocked
                     });
                 using var message = new Message(Encoding.ASCII.GetBytes(messageBody))
                 {
                     ContentType = "application/json",
                     ContentEncoding = "utf-8",
                 };
-
-                // Add a custom application property to the message.
-                // An IoT hub can filter on these properties without access to the message body.
-                message.Properties.Add("temperatureAlert", (currentTemperature > 30) ? "true" : "false");
 
                 // Send the telemetry message
                 await s_deviceClient.SendEventAsync(message);
