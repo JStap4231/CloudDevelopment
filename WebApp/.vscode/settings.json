@@ -1,0 +1,5 @@
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "bin\\Release\\netcoreapp3.1\\publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/73ebc9ea-0b42-4631-baa0-2f33c6a82b08/resourceGroups/CloudDevelopment/providers/Microsoft.Web/sites/JStap4231CloudDevWebApp"
+}

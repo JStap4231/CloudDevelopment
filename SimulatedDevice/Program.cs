@@ -89,47 +89,48 @@ namespace SimulatedDevice
         private static async Task SendDeviceToCloudMessagesAsync(CancellationToken ct)
         {
             // Initial telemetry values
-            double minTemp = 15;
-            bool doorLocked;
-            bool isHeatingOn;
+            double air = 50;
+            double noise =  50;
+            string airRating;
+            string noiseRating;
             var rand = new Random();
 
             while (!ct.IsCancellationRequested)
             {
-                //Calculate the new current temperature of the bedroom
-                double currentBedroomTemperature = minTemp + rand.NextDouble() * 10;
+                //Calculate the new air pollution reading
+                double currentAir = air + rand.NextDouble() * 150;
 
-                //Calculate the new current temperature of the livingroom
-                double currentLivingroomTemperature = minTemp + rand.NextDouble() * 10;
+                //Calculate the new noise pollution reading
+                double currentNoise = noise + rand.NextDouble() * 100;
                 
-                //Create the value that will be used to asses whether the door is unlocked
-                double door = rand.NextDouble();
-                
-                //Decide if the door is unlocked. There is a 20% chance the door will be unlocked every
-                //time the simulated device send data.
-                if (door > 0.8){
-                    doorLocked = false;
-                }
-                else{
-                    doorLocked = true;
+                //Depending on the value of the air pollution, give it an appropriate rating.
+                if (currentAir <= 60){
+                    airRating = "low";
+                }else if (currentAir > 60 & currentAir <= 110){
+                    airRating = "elevated";
+                }else if(currentAir > 110 & currentAir <= 160){
+                    airRating = "high";
+                }else{
+                    airRating = "very high";
                 }
 
-                //Decide if the heating is on or not
-                if (currentBedroomTemperature < 20 | currentLivingroomTemperature < 20){
-                    isHeatingOn = true;
-                }
-                else{
-                    isHeatingOn = false;
+                //Depending on the noise polluttion level, give it an appropriate rating.
+                if (currentNoise <= 65){
+                    noiseRating = "low";
+                }else if (currentNoise > 65 & currentNoise <= 75){
+                    noiseRating = "elevated";
+                }else{
+                    noiseRating = "high";
                 }
 
                 // Create JSON message
                 string messageBody = JsonSerializer.Serialize(
                     new
                     {
-                        currentLivingroomTemperature,
-                        currentBedroomTemperature,
-                        isHeatingOn,
-                        doorLocked
+                        currentAir,
+                        airRating,
+                        currentNoise,
+                        noiseRating
                     });
                 using var message = new Message(Encoding.ASCII.GetBytes(messageBody))
                 {
